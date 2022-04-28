@@ -1,3 +1,6 @@
+import time
+
+
 def initialize_board(board_width: 7, board_height: 6) -> list:
     """ Initialize the board with all '0' """
     # board = [["0"] * board_width] * board_height
@@ -42,12 +45,29 @@ def print_board_human_friendly(board: list) -> None:
     print(divider)
 
 
-def print_game_over(is_player_1_turn: bool) -> None:
+def print_game_over_tie() -> None:
     print()
     print("#######################################")
-    print("            Player " + str(1 if is_player_1_turn else 2) + " has won!")
+    print("       It's a tie!")
     print("#######################################")
     print()
+
+
+def print_game_over_player_won(is_player_1_turn: bool) -> None:
+    print()
+    print("#######################################")
+    print("       Player " + str(1 if is_player_1_turn else 2) + " has won!")
+    print("#######################################")
+    print()
+
+
+def print_game_over_time_up(is_player_1_turn: bool) -> None:
+    print()
+    print("#######################################")
+    print("    Player " + str(1 if is_player_1_turn else 2) + " lost due to time up!")
+    print("#######################################")
+    print()
+
 
 def is_board_full(board: list) -> bool:
     """
@@ -103,32 +123,40 @@ def diagonal_win(board: list, player_symbol: str, required_in_a_row=4, top_left_
     Returns True if the player has won diagonally, False otherwise.
     """
     # Check for diagonal win (top left to bottom right)
-    reversed_board = list(reversed(board))
-
     if top_left_to_bottom_right:
         for row_idx in range(BOARD_HEIGHT):
             in_a_row = 0
             for col_idx in range(BOARD_WIDTH):
 
-                if reversed_board[row_idx][col_idx] == player_symbol:
-                    in_a_row += 1
-                else:
-                    in_a_row = 0
-                if in_a_row == required_in_a_row:
-                    return True
+                while row_idx < BOARD_HEIGHT and col_idx < BOARD_WIDTH:
+                    if board[row_idx][col_idx] == player_symbol:
+                        in_a_row += 1
+                    else:
+                        in_a_row = 0
+
+                    if in_a_row == required_in_a_row:
+                        return True
+
+                    row_idx += 1
+                    col_idx += 1
 
     # Check for diagonal win (bottom left to top right)
     else:
         for row_idx in range(BOARD_HEIGHT):
             in_a_row = 0
             for col_idx in range(BOARD_WIDTH):
-                if row_idx + col_idx == 0:
-                    if reversed_board[row_idx][col_idx] == player_symbol:
+
+                while row_idx >= 0 and col_idx < BOARD_WIDTH:
+                    if board[row_idx][col_idx] == player_symbol:
                         in_a_row += 1
                     else:
                         in_a_row = 0
+
                     if in_a_row == required_in_a_row:
                         return True
+
+                    row_idx -= 1
+                    col_idx += 1
 
 
 def has_won_check(board: list, player_symbol: str, required_in_a_row=4) -> bool:
@@ -154,6 +182,7 @@ if __name__ == '__main__':
     # Define player symbols
     player_1_symbol = "*"
     player_2_symbol = "%"
+    allowed_time_per_turn = 10  # Seconds
 
     # initialize the board
     BOARD_WIDTH = 7
@@ -165,10 +194,13 @@ if __name__ == '__main__':
     print_board(board, print_human_friendly)
 
     is_player_1_turn = True
-    a_player_has_won = False
+    game_over = False
 
     # Main game loop. Continue until a player has won or the board is full
-    while not a_player_has_won and not is_board_full(board):
+    while not game_over:
+
+        # Start this turn's time counter
+        turn_start_time = time.time()
 
         # Determine which player's turn it is and get their symbol
         if is_player_1_turn:
@@ -178,37 +210,66 @@ if __name__ == '__main__':
             print("Player 2's turn")
             concurrent_player_symbol = player_2_symbol
 
-        try:
-            # Prompt the user for their move 1 - 7
-            column_number = int(input("Enter a column number: "))
-            print()
-            assert 1 <= column_number <= 7
+        valid_move = False
+        while not valid_move:
 
-            # Check if column is full
-            assert board[0][column_number - 1] == "0"
+            try:
+                # Prompt the user for their move 1 - 7
+                column_number = int(input("Enter a column number: "))
+                print()
+                assert 1 <= column_number <= 7
 
-            # Reverse the board so that the bottom row is the first row. This makes life easier for inserting the symbol
-            reversed_board = list(reversed(board))
+                # Check if column is full
+                assert board[0][column_number - 1] == "0"
 
-            # Insert the symbol into the board
-            for row in reversed_board:
-                if row[column_number - 1] == "0":
-                    row[column_number - 1] = concurrent_player_symbol
+                # Check if the move was made in time
+                move_time = time.time() - turn_start_time
+                if move_time > allowed_time_per_turn:
+                    print_game_over_time_up(is_player_1_turn)
+                    game_over = True
                     break
 
-            # Print the board
-            print_board(board, print_human_friendly)
+                # If move was made in time and passed the asserts, then the move is valid
+                valid_move = True
 
-            # Check if the player has won
-            if has_won_check(board, concurrent_player_symbol):
-                a_player_has_won = True
-                print_game_over(is_player_1_turn)
-                break
+                # Reverse the board so that the bottom row is the first row.
+                # This makes life easier for inserting the current player's symbol
+                reversed_board = list(reversed(board))
 
-            # Switch turns
-            is_player_1_turn = not is_player_1_turn
-            print()
+                # Insert the symbol into the board
+                for row in reversed_board:
+                    if row[column_number - 1] == "0":
+                        row[column_number - 1] = concurrent_player_symbol
+                        break
 
-        except Exception:
-            print("Invalid input. Should be an integer value from 1 to 7")
-            continue
+                # Print the board
+                print_board(board, print_human_friendly)
+
+                # Check if the player has won
+                if has_won_check(board, concurrent_player_symbol):
+                    print_game_over_player_won(is_player_1_turn)
+                    game_over = True
+                    break
+
+                # Switch turns
+                is_player_1_turn = not is_player_1_turn
+                print()
+
+                # Check if the board is full
+                if is_board_full(board):
+                    print_game_over_tie()
+                    game_over = True
+                    break
+
+            except Exception:
+
+                seconds_elapsed = time.time() - turn_start_time
+                seconds_remaining = round(allowed_time_per_turn - seconds_elapsed, 2)
+
+                if seconds_remaining < 0:
+                    print_game_over_time_up(is_player_1_turn)
+                    break
+                else:
+                    print(f"Invalid input. Should be an integer value from 1 to 7. "
+                          f"You have {seconds_remaining} seconds left to make a move.")
+                    continue
