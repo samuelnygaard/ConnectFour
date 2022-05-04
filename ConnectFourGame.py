@@ -23,7 +23,7 @@ class ConnectFourGame:
                  turn_time_sec=10,
                  connections_to_win=4,
                  player_1_starts=True,
-                 print_human_friendly=True,
+                 human_friendly_board=True,
                  player_1=Player("Gary", "X", True),
                  player_2=Player("Magnus", "O", True)
                  ):
@@ -38,7 +38,7 @@ class ConnectFourGame:
         self.connections_to_win = connections_to_win  # Number of connections to win
         self.is_player_1_turn = player_1_starts
         self.is_game_over = False
-        self.print_human_friendly = print_human_friendly
+        self.human_friendly_board = human_friendly_board
 
         # Setup players
         self.player_1 = player_1
@@ -54,7 +54,7 @@ class ConnectFourGame:
         input("Press Enter to start the game...")
 
         # Print the board
-        self.print_board(board, self.print_human_friendly)
+        self.print_board(board, self.human_friendly_board)
 
         # Play the game
         # Main game loop. Continue until a player has won or the board is full
@@ -110,7 +110,7 @@ class ConnectFourGame:
                             break
 
                     # Print the board and the player's used time
-                    self.print_board(board, self.print_human_friendly)
+                    self.print_board(board, self.human_friendly_board)
                     self.print_players_total_turn_time()
 
                     # Check if the player has won
@@ -335,6 +335,6 @@ class ConnectFourGame:
 
 if __name__ == '__main__':
     # Initialize the game
-    game = ConnectFourGame()
+    game = ConnectFourGame(human_friendly_board=False)
 
     game.play()
