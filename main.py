@@ -1,12 +1,12 @@
 import time
 
 
-def initialize_board(board_width: 7, board_height: 6) -> list:
+def initialize_board(board_width: 7, board_height: 6, empty_cell_symbol) -> list:
     """ Initialize the board with all '0' """
     # board = [["0"] * board_width] * board_height
     board = []
     for rows in range(board_height):
-        board.append(["0" for _ in range(board_width)])
+        board.append([empty_cell_symbol for _ in range(board_width)])
     return board
 
 
@@ -69,13 +69,13 @@ def print_game_over_time_up(is_player_1_turn: bool) -> None:
     print()
 
 
-def is_board_full(board: list) -> bool:
+def is_board_full(board: list, empty_cell_symbolt) -> bool:
     """
     Returns True if the board is full, meaning it contains a single '0' and False otherwise.
     """
     for row in board:
         for cell in row:
-            if cell == "0":
+            if cell == empty_cell_symbolt:
                 return False
     return True
 
@@ -180,14 +180,15 @@ def has_won_check(board: list, player_symbol: str, required_in_a_row=4) -> bool:
 if __name__ == '__main__':
 
     # Define player symbols
-    player_1_symbol = "*"
-    player_2_symbol = "%"
+    empty_cell_symbol = "-"
+    player_1_symbol = "X"
+    player_2_symbol = "O"
     allowed_time_per_turn = 10  # Seconds
 
     # initialize the board
     BOARD_WIDTH = 7
     BOARD_HEIGHT = 6
-    board = initialize_board(BOARD_WIDTH, BOARD_HEIGHT)
+    board = initialize_board(BOARD_WIDTH, BOARD_HEIGHT, empty_cell_symbol)
 
     # Print the initial board
     print_human_friendly = True
@@ -220,7 +221,7 @@ if __name__ == '__main__':
                 assert 1 <= column_number <= 7
 
                 # Check if column is full
-                assert board[0][column_number - 1] == "0"
+                assert board[0][column_number - 1] == empty_cell_symbol
 
                 # Check if the move was made in time
                 move_time = time.time() - turn_start_time
@@ -238,7 +239,7 @@ if __name__ == '__main__':
 
                 # Insert the symbol into the board
                 for row in reversed_board:
-                    if row[column_number - 1] == "0":
+                    if row[column_number - 1] == empty_cell_symbol:
                         row[column_number - 1] = concurrent_player_symbol
                         break
 
@@ -256,7 +257,7 @@ if __name__ == '__main__':
                 print()
 
                 # Check if the board is full
-                if is_board_full(board):
+                if is_board_full(board, empty_cell_symbol):
                     print_game_over_tie()
                     game_over = True
                     break
