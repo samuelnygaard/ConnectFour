@@ -20,6 +20,7 @@ class ConnectFourGame:
 
     def __init__(self, board_size=(7, 6),
                  turn_time_sec=10,
+                 connections_to_win=4,
                  player_1_starts=True,
                  print_human_friendly=True,
                  player_1=Player("Gary", "X", True),
@@ -33,6 +34,7 @@ class ConnectFourGame:
 
         # Game settings
         self.turn_time_sec = turn_time_sec  # Seconds
+        self.connections_to_win = connections_to_win  # Number of connections to win
         self.is_player_1_turn = player_1_starts
         self.is_game_over = False
         self.print_human_friendly = print_human_friendly
@@ -104,7 +106,7 @@ class ConnectFourGame:
                     self.print_board(board, self.print_human_friendly)
 
                     # Check if the player has won
-                    if self.has_won_check(board, concurrent_player_symbol):
+                    if self.has_won_check(board, concurrent_player_symbol, self.connections_to_win):
                         self.print_game_over_player_won()
                         self.is_game_over = True
                         break
@@ -172,36 +174,41 @@ class ConnectFourGame:
         # Print row divider
         print(divider)
 
-    def print_start_game_message(self):
-        print("Starting Connect Four Game...")
-        print("Board size: " + str(self.board_width) + " X " + str(self.board_height))
-        print("Time per turn: " + str(self.turn_time_sec) + " seconds")
-        print("Player 1: " + self.player_1.name + " (" + self.player_1.symbol + f") is a {'human' if self.player_1.is_human else 'computer'} player")
-        print("Player 2: " + self.player_2.name + " (" + self.player_2.symbol + f") is a {'human' if self.player_2.is_human else 'computer'} player")
-        print()
-        print(f"{self.player_1.name if self.is_player_1_turn else self.player_2.name} starts the game!")
+    def print_start_game_message(self, verbose=True) -> str:
+        start_games_message = "Welcome to Connect Four!\n"
+        start_games_message += "Board size: " + str(self.board_width) + " X " + str(self.board_height) + "\n"
+        start_games_message += "Time per turn: " + str(self.turn_time_sec) + " seconds" + "\n\n"
+        start_games_message += "Player 1: " + self.player_1.name + " (" + self.player_1.symbol + f") is a {'human' if self.player_1.is_human else 'computer'} player" + "\n"
+        start_games_message += "Player 2: " + self.player_2.name + " (" + self.player_2.symbol + f") is a {'human' if self.player_2.is_human else 'computer'} player" + "\n\n"
+        start_games_message += f"{self.player_1.name if self.is_player_1_turn else self.player_2.name} starts the game!" + "\n"
+        if verbose:
+            print(start_games_message)
+        return start_games_message
 
     @staticmethod
-    def print_game_over_tie() -> None:
-        print()
-        print("#######################################")
-        print("       It's a tie!")
-        print("#######################################")
-        print()
+    def print_game_over_tie(verbose=True) -> str:
+        game_over_tie_message = "#########################################\n"
+        game_over_tie_message += "        It's a tie!\n"
+        game_over_tie_message += "#########################################\n"
+        if verbose:
+            print(game_over_tie_message)
+        return game_over_tie_message
 
-    def print_game_over_player_won(self) -> None:
-        print()
-        print("#######################################")
-        print("       Player " + str(1 if self.is_player_1_turn else 2) + " has won!")
-        print("#######################################")
-        print()
+    def print_game_over_player_won(self, verbose=True) -> str:
+        game_over_player_won_message = "#########################################\n"
+        game_over_player_won_message += "         Player " + str(1 if self.is_player_1_turn else 2) + " has won!\n"
+        game_over_player_won_message += "#########################################\n"
+        if verbose:
+            print(game_over_player_won_message)
+        return game_over_player_won_message
 
-    def print_game_over_time_up(self) -> None:
-        game_over_time_up_message = "#######################################\n"
+    def print_game_over_time_up(self, verbose=True) -> str:
+        game_over_time_up_message = "#########################################\n"
         game_over_time_up_message += "    Player " + str(1 if self.is_player_1_turn else 2) + " lost due to time up!\n"
-        game_over_time_up_message += "#######################################\n"
-        print()
-
+        game_over_time_up_message += "#########################################\n"
+        if verbose:
+            print(game_over_time_up_message)
+        return game_over_time_up_message
 
     def is_board_full(self, board: list) -> bool:
         """
@@ -308,7 +315,6 @@ class ConnectFourGame:
 
 
 if __name__ == '__main__':
-
     # Initialize the game
     game = ConnectFourGame()
 
