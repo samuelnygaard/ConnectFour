@@ -4,7 +4,7 @@ $cell-size-half: $cell-size / 2;
 $cell-size-quarter: $cell-size / 4;
 
 body {
-    background: black;
+    background: #312E2B;
     margin: 0;
     width: 100vw;
     height: 100vh;
@@ -43,11 +43,11 @@ body {
     width: $cell-size - $cell-size-quarter;
     height: $cell-size - $cell-size-quarter;
     border-radius: 50%;
-    box-shadow: 0 0 0 5px black;
+    box-shadow: 0 0 0 5px #312E2B;
 }
 
 .empty {
-    background-color: black;
+    background-color: #312E2B;
 }
 
 .player-1 {
