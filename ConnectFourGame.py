@@ -8,6 +8,7 @@ class Player:
         self.name = name
         self.symbol = symbol
         self.is_human = is_human
+        self.time_per_move = []
 
     def next_move(self, board):
         if self.is_human:
@@ -83,11 +84,17 @@ class ConnectFourGame:
                     assert board[0][column_number - 1] == self.empty_cell_symbol
 
                     # Check if the move was made in time
-                    move_time = time.time() - turn_start_time
-                    if move_time > self.turn_time_sec:
+                    move_time_sec = round(time.time() - turn_start_time, 2)
+                    if move_time_sec > self.turn_time_sec:
                         self.print_game_over_time_up()
                         self.is_game_over = True
                         break
+
+                    # Add move time to player's time list
+                    if self.is_player_1_turn:
+                        self.player_1.time_per_move.append(move_time_sec)
+                    else:
+                        self.player_2.time_per_move.append(move_time_sec)
 
                     # If move was made in time and passed the asserts, then the move is valid
                     valid_move = True
@@ -102,8 +109,9 @@ class ConnectFourGame:
                             row[column_number - 1] = concurrent_player_symbol
                             break
 
-                    # Print the board
+                    # Print the board and the player's used time
                     self.print_board(board, self.print_human_friendly)
+                    self.print_players_total_turn_time()
 
                     # Check if the player has won
                     if self.has_won_check(board, concurrent_player_symbol, self.connections_to_win):
@@ -173,6 +181,17 @@ class ConnectFourGame:
 
         # Print row divider
         print(divider)
+
+    def print_players_total_turn_time(self, verbose=True) -> str:
+        """ Prints the total time of the players """
+
+        player_total_turn_time_msg = f"{self.player_1.name} has used {round(sum(self.player_1.time_per_move), 2)} seconds in total" + "\n"
+        player_total_turn_time_msg += f"{self.player_2.name} has used {round(sum(self.player_2.time_per_move), 2)} minutes in total" + "\n"
+
+        if verbose:
+            print(player_total_turn_time_msg)
+
+        return player_total_turn_time_msg
 
     def print_start_game_message(self, verbose=True) -> str:
         start_games_message = "Welcome to Connect Four!\n"
