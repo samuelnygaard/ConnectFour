@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block head %}
+      <link href="{{ url_for('static', filename='css/play.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block main %}
 <div class="container">
     <div class="board">

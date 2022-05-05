@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Connect Four</title>
-     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+     <link href="{{ url_for('static', filename='css/base.css') }}" rel="stylesheet">
+    {% block head %}
+    {% endblock %}
 </head>
 <body>
 {% block main %}

@@ -4,15 +4,8 @@ mod = Blueprint('game', __name__, url_prefix='/')
 
 
 @mod.route('/', methods=['GET'])
-def index():
-    board = [['-', '-', '-', '-', '-', '-', '-'],
-             ['-', '-', '-', '-', '-', '-', '-'],
-             ['-', '-', '-', '-', '-', 'O', '-'],
-             ['-', 'X', '-', '-', '-', 'O', '-'],
-             ['O', 'X', '-', 'O', '-', 'X', '-'],
-             ['X', 'O', '-', 'X', 'X', 'O', 'X']]
-
-    return render_template('game/index.html', board=board)
+def lobby():
+    return render_template('game/lobby.html')
 
 
 @mod.route('/play', methods=['GET'])

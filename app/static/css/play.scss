@@ -1,14 +1,12 @@
 
-$cell-size: 200px;
+
+
+$cell-size: 5vw;
 $cell-size-half: $cell-size / 2;
 $cell-size-quarter: $cell-size / 4;
+$board-color-blue: #0173D3;
+$background-color-main: #312E2B;
 
-body {
-    background: #312E2B;
-    margin: 0;
-    width: 100vw;
-    height: 100vh;
-}
 
 .container {
     width: 100%;
@@ -22,7 +20,7 @@ body {
     width: 7 * $cell-size;
     height: 6 * $cell-size;
     padding: round($cell-size / 10);
-    background-color: #0173D3;
+    background-color: $board-color-blue;
     border-radius: round($cell-size / 20);
 }
 
@@ -33,7 +31,7 @@ body {
 .cell-border {
     width: $cell-size;
     height: $cell-size;
-    background-color: #0173D3;
+    background-color: $board-color-blue;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,11 +41,11 @@ body {
     width: $cell-size - $cell-size-quarter;
     height: $cell-size - $cell-size-quarter;
     border-radius: 50%;
-    box-shadow: 0 0 0 5px #312E2B;
+    box-shadow: 0 0 0 5px $background-color-main;
 }
 
 .empty {
-    background-color: #312E2B;
+    background-color: $background-color-main;
 }
 
 .player-1 {

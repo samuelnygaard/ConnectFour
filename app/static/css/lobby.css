@@ -1,0 +1,90 @@
+.container {
+  width: 100%;
+  height: 100%;
+  color: white;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  font-size: xx-large;
+}
+.title h1 {
+  margin-top: 10vh;
+}
+
+.bottom-container {
+  margin-top: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-connections {
+  width: 30%;
+}
+
+.form-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  margin-bottom: 2vh;
+}
+
+.port-and-button-container {
+  display: flex;
+  height: 5vh;
+}
+
+label {
+  font-size: x-large;
+}
+
+input {
+  width: 7.5vw;
+  height: 5vh;
+  margin-right: 1vw;
+  border: none;
+  text-align: center;
+  font-size: large;
+}
+
+.player-port {
+  display: flex;
+}
+
+.connect-button {
+  background-color: #0173D3;
+  height: 5vh;
+  width: 15vw;
+  color: white;
+  font-size: large;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+  outline: 0;
+}
+
+.play-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.play-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: xx-large;
+  background-color: #0173D3;
+  height: 5vh;
+  width: 15vw;
+  border-radius: 5px;
+  padding: 3px;
+  border: 1px solid #000;
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=lobby.css.map */

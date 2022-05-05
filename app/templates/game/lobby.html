@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <link href="{{ url_for('static', filename='css/lobby.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="title">
+            <h1>Ambolt.io Connect Four Challenge</h1>
+        </div>
+        <div class="bottom-container">
+            <div class="player-connections">
+                <div class="player-port">
+                    <div class="form-container">
+                        <form>
+                            <label for="portnumber1">Player 1's Port</label><br>
+                            <div class="port-and-button-container">
+                                <input type="text" id="portnumber1" name="portnumber1">
+                                <button class="connect-button">
+                                    Test Connection
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="player-port">
+                    <div class="form-container">
+                        <form>
+                            <label for="portnumber1">Player 1's Port</label><br>
+                            <div class="port-and-button-container">
+                                <input type="text" id="portnumber1" name="portnumber1">
+                                <button class="connect-button">
+                                    Test Connection
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="play-button-container">
+                    <a href="{{ url_for('game.play') }}">
+                        <div class="play-button">
+                            Play
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
