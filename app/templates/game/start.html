@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link href="{{ url_for('static', filename='css/game.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <div class="title-container">
+        <h1>{{ "Player 1's turn" if game.is_player_1_turn else "Player 2's turn" }}</h1>
+    </div>
+    <div class="board-container">
+        <div class="board">
+            <!-- Connect Four Grid -->
+            {% for row in game.board %}
+            <div class="row">
+                {% for cell in row %}
+                    {% if cell == 'X' %}
+                    <div class="cell-border">
+                        <div class="cell-hole player-1"></div>
+                    </div>
+                    {% elif cell == 'O' %}
+                    <div class="cell-border">
+                        <div class="cell-hole player-2"></div>
+                    </div>
+                    {% else %}
+                    <div class="cell-border">
+                        <div class="cell-hole empty"></div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

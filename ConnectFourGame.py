@@ -32,6 +32,7 @@ class ConnectFourGame:
         self.board_width = board_size[0]
         self.board_height = board_size[1]
         self.empty_cell_symbol = "-"
+        self.board = self.initialize_board()
 
         # Game settings
         self.turn_time_sec = turn_time_sec  # Seconds
@@ -48,13 +49,13 @@ class ConnectFourGame:
         """ Start the game. """
 
         # Initialize the board
-        board = self.initialize_board()
+        self.board = self.initialize_board()
         self.print_start_game_message()
 
         input("Press Enter to start the game...")
 
         # Print the board
-        self.print_board(board, self.human_friendly_board)
+        self.print_board(self.board, self.human_friendly_board)
 
         # Play the game
         # Main game loop. Continue until a player has won or the board is full
@@ -81,7 +82,7 @@ class ConnectFourGame:
                     assert 1 <= column_number <= self.board_width
 
                     # Check if column is full
-                    assert board[0][column_number - 1] == self.empty_cell_symbol
+                    assert self.board[0][column_number - 1] == self.empty_cell_symbol
 
                     # Check if the move was made in time
                     move_time_sec = round(time.time() - turn_start_time, 2)
@@ -101,7 +102,7 @@ class ConnectFourGame:
 
                     # Reverse the board so that the bottom row is the first row.
                     # This makes life easier for inserting the current player's symbol
-                    reversed_board = list(reversed(board))
+                    reversed_board = list(reversed(self.board))
 
                     # Insert the symbol into the board
                     for row in reversed_board:
@@ -110,11 +111,11 @@ class ConnectFourGame:
                             break
 
                     # Print the board and the player's used time
-                    self.print_board(board, self.human_friendly_board)
+                    self.print_board(self.board, self.human_friendly_board)
                     self.print_players_total_turn_time()
 
                     # Check if the player has won
-                    if self.has_won_check(board, concurrent_player_symbol, self.connections_to_win):
+                    if self.has_won_check(self.board, concurrent_player_symbol, self.connections_to_win):
                         self.print_game_over_player_won()
                         self.is_game_over = True
                         break
@@ -124,7 +125,7 @@ class ConnectFourGame:
                     print()
 
                     # Check if the board is full
-                    if self.is_board_full(board):
+                    if self.is_board_full(self.board):
                         self.print_game_over_tie()
                         self.is_game_over = True
                         break

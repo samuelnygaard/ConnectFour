@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from ConnectFourGame import ConnectFourGame
 
 mod = Blueprint('game', __name__, url_prefix='/')
 
@@ -8,8 +9,11 @@ def lobby():
     return render_template('game/lobby.html')
 
 
-@mod.route('/play', methods=['GET'])
-def play():
+@mod.route('/start', methods=['GET'])
+def start():
+
+    connectFourGame = ConnectFourGame()
+
     example_board_1 = [['-', '-', '-', '-', '-', '-', '-'],
                        ['-', '-', '-', '-', '-', '-', '-'],
                        ['-', '-', '-', '-', '-', 'O', '-'],
@@ -17,11 +21,5 @@ def play():
                        ['O', 'X', '-', 'O', '-', 'X', '-'],
                        ['X', 'O', '-', 'X', 'X', 'O', 'X']]
 
-    example_board_2 = [['-', '-', '-', '-', '-', '-', '-'],
-                       ['-', '-', '-', '-', '-', '-', '-'],
-                       ['-', '-', '-', '-', '-', '-', '-'],
-                       ['-', '-', '-', '-', '-', '-', '-'],
-                       ['-', '-', '-', '-', '-', '-', '-'],
-                       ['-', '-', '-', '-', '-', '-', '-']]
 
-    return render_template('game/play.html', board=example_board_2)
+    return render_template('game/start.html', game=connectFourGame)
