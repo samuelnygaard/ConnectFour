@@ -1,6 +1,4 @@
 
-
-
 $cell-size: 5vw;
 $cell-size-half: $cell-size / 2;
 $cell-size-quarter: $cell-size / 4;
@@ -17,11 +15,11 @@ $background-color-main: #312E2B;
 }
 
 .board {
-    width: 7 * $cell-size;
-    height: 6 * $cell-size;
-    padding: round($cell-size / 10);
+    width: 7 * $cell-size + $cell-size-quarter;
+    height: 6 * $cell-size + $cell-size-quarter;
     background-color: $board-color-blue;
-    border-radius: round($cell-size / 20);
+    padding: $cell-size-quarter / 2;
+    border-radius: 5px;
 }
 
 .row {
@@ -37,7 +35,7 @@ $background-color-main: #312E2B;
     align-items: center;
 }
 
-.cell {
+.cell-hole {
     width: $cell-size - $cell-size-quarter;
     height: $cell-size - $cell-size-quarter;
     border-radius: 50%;

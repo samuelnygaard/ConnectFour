@@ -7,11 +7,11 @@
 }
 
 .board {
-  width: 35vw;
-  height: 30vw;
-  padding: 1vw;
+  width: 36.25vw;
+  height: 31.25vw;
   background-color: #0173D3;
-  border-radius: 0vw;
+  padding: 0.625vw;
+  border-radius: 5px;
 }
 
 .row {
@@ -27,7 +27,7 @@
   align-items: center;
 }
 
-.cell {
+.cell-hole {
   width: 3.75vw;
   height: 3.75vw;
   border-radius: 50%;

@@ -13,15 +13,15 @@
             {% for cell in row %}
             {% if cell == 'X' %}
             <div class="cell-border">
-                <div class="cell player-1"></div>
+                <div class="cell-hole player-1"></div>
             </div>
             {% elif cell == 'O' %}
             <div class="cell-border">
-                <div class="cell player-2"></div>
+                <div class="cell-hole player-2"></div>
             </div>
             {% else %}
             <div class="cell-border">
-                <div class="cell empty"></div>
+                <div class="cell-hole empty"></div>
             </div>
             {% endif %}
             {% endfor %}
