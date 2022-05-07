@@ -7,14 +7,16 @@
 {% block main %}
 <div class="container">
     <div class="title-container">
-        <h1>{{ "Player 1's turn" if game.is_player_1_turn else "Player 2's turn" }}</h1>
+        <h1>{{ message }}</h1>
     </div>
     <div class="board-container">
         <div class="board">
+
             <!-- Connect Four Grid -->
-            {% for row in game.board %}
+            {% for row in board %}
             <div class="row">
                 {% for cell in row %}
+                <a href="{{ url_for('move', col=loop.index) }}">
                     {% if cell == 'X' %}
                     <div class="cell-border">
                         <div class="cell-hole player-1"></div>
@@ -28,6 +30,7 @@
                         <div class="cell-hole empty"></div>
                     </div>
                     {% endif %}
+                </a>
                 {% endfor %}
             </div>
             {% endfor %}
