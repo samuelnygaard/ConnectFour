@@ -3,6 +3,8 @@ $cell-size-half: $cell-size / 2;
 $cell-size-quarter: $cell-size / 4;
 $board-color-blue: #0173D3;
 $background-color-main: #312E2B;
+$bottom-width: 15vw;
+$bottom-height: 5vh;
 
 .board-container {
   display: flex;
@@ -48,4 +50,25 @@ $background-color-main: #312E2B;
 
 .player-2 {
   background-color: red;
+}
+
+.bottom-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20vh;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: xx-large;
+  background-color: $board-color-blue;
+  height: $bottom-height;
+  width: $bottom-width;
+  border-radius: 5px;
+  padding: 3px;
+  border: 1px solid #000;
+  text-decoration: none;
 }

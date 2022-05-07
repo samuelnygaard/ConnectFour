@@ -44,4 +44,25 @@
   background-color: red;
 }
 
+.bottom-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20vh;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: xx-large;
+  background-color: #0173D3;
+  height: 5vh;
+  width: 15vw;
+  border-radius: 5px;
+  padding: 3px;
+  border: 1px solid #000;
+  text-decoration: none;
+}
+
 /*# sourceMappingURL=game.css.map */

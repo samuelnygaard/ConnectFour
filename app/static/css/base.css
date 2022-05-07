@@ -23,4 +23,10 @@ body {
   height: 20vh;
 }
 
+a {
+  color: white;
+  text-decoration: none;
+  outline: 0;
+}
+
 /*# sourceMappingURL=base.css.map */
