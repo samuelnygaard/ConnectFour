@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from ConnectFourGame import ConnectFourGame
+import requests
 
 
 def create_app():
@@ -7,14 +8,42 @@ def create_app():
     app = Flask(__name__)
 
     game = ConnectFourGame()
+    server_ip = '0.0.0.0'
+    port1_valid = False
+    port2_valid = True
+
+    # @app.route('/check', methods=['GET', 'POST'])
+    # def check():
+    #     if request.method == 'POST':
+    #         if 'portnumber1' in request.form:
+    #             portnumber = request.form['portnumber1']
+    #             port1_valid = True
+    #             return render_template("game/lobby.html", port1_valid=port1_valid, port2_valid=port2_valid)
+    #         elif 'portnumber2' in request.form:
+    #             portnumber = request.form['portnumber2']
+    #             port2_valid = True
+    #             return render_template("game/lobby.html", port1_valid=port1_valid, port2_valid=port2_valid)
+    #         else:
+    #
+    #         # send request to server ip and portnumber
+    #
+    #         # get response from server
+    #         # get_name = server_ip + ':' + portnumber + '/api/get_name'
+    #         # name = requests.get(get_name)
+    #
+    #     return render_template("game/lobby.html", port1_valid=port1_valid, port2_valid=port2_valid)
 
     @app.route('/')
     def lobby():
-        return render_template("game/lobby.html")
+        return render_template("game/lobby.html", port1_valid=port1_valid, port2_valid=port2_valid)
 
     # route to reset the board and start a new game
     @app.route('/start', methods=['GET', 'POST'])
     def start():
+        if request.method == 'POST':
+            portnumber1 = request.form['portnumber1']
+            portnumber2 = request.form['portnumber2']
+            print(portnumber1, portnumber2)
 
         game.board = game.initialize_board()
         game_message = "New Game! - Player 1's turn" if game.current_player == game.player_1 else "New Game! - Player 2's turn"
