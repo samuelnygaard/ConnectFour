@@ -1,6 +1,4 @@
-import random
-import time
-
+import requests
 
 class Player:
 
@@ -8,13 +6,19 @@ class Player:
         self.name = name
         self.symbol = symbol
         self.is_human = is_human
+        self.port = None
         self.time_per_move = []
 
-    def next_move(self, board):
-        if self.is_human:
-            return int(input(f"{self.name}, enter your move: "))
-        else:
-            return random.randint(0, len(board[0]) - 1)
+    def request_move(self, server_ip, board, board_width):
+        # Send a post requst with a board to check if a valid move is made
+        move = requests.post(f'http://{server_ip}:' + str(self.port) + '/api/nextmove',
+                             json={
+                                 'board': board,
+                                 'board_width': board_width
+                             })
+        move = int(move.json()['response'])
+
+        return move
 
 
 class ConnectFourGame:
