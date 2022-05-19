@@ -1,57 +1,63 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <link href="{{ url_for('static', filename='css/lobby.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/lobby.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block main %}
-    <div class="container">
-        <div class="title-container">
-            <h1>Ambolt.io Connect Four Challenge</h1>
-        </div>
-        <div class="bottom-container">
-            <div class="player-connections">
-                <p style="color:red;">{{ message }}</p>
-                <div class="player-port">
-                    <div class="form-container">
-                        <form action="{{ url_for('check') }}" method="post">
-                            <label for="portnumber1">Player 1's Port</label><br>
-                            <div class="port-and-button-container">
-                                {% if port1_valid == True %}
-                                <input type="text" id="portnumber1" name="portnumber1" value="{{ game.player_1.port }}" disabled="disabled"/>
-                                <input class="connect-button" type="submit" value="Player 1 connected" style="background: green"/>
-                                {% else %}
-                                <input type="text" id="portnumber1" name="portnumber1"/>
-                                <input class="connect-button" type="submit" value="Test Connection"/>
-                                {% endif %}
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="player-port">
-                    <div class="form-container">
-                        <form action="{{ url_for('check') }}" method="post">
-                            <label for="portnumber2">Player 2's Port</label><br>
-                            <div class="port-and-button-container">
-                                {% if port2_valid == True %}
-                                <input type="text" id="portnumber2" name="portnumber2" value="{{ game.player_2.port }}" disabled="disabled"/>
-                                <input class="connect-button" type="submit" value="Player 2 connected" style="background: green"/>
-                                {% else %}
-                                <input type="text" id="portnumber2" name="portnumber2"/>
-                                <input class="connect-button" type="submit" value="Test Connection"/>
-                                {% endif %}
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="play-button-container">
-                    <a href="{{ url_for('start') }}">
-                        <div class="play-button">
-                            Play
+<div class="container">
+    <div class="title-container">
+        <h1>Ambolt.io Connect Four Challenge</h1>
+    </div>
+    <div class="message-container">
+        <p style="color:red;">{{ message }}</p>
+    </div>
+    <div class="bottom-container">
+        <div class="player-connections">
+            <div class="player-port">
+                <div class="form-container">
+                    <form action="{{ url_for('check') }}" method="post">
+                        <label for="portnumber1">Player 1's Port</label><br>
+                        <div class="port-and-button-container">
+                            {% if port1_valid == True %}
+                            <input type="text" id="portnumber1" name="portnumber1" value="{{ game.player_1.port }}"
+                                   disabled="disabled"/>
+                            <input class="connect-button" type="submit" value="Player 1 connected"
+                                   style="background: green"/>
+                            {% else %}
+                            <input type="text" id="portnumber1" name="portnumber1"/>
+                            <input class="connect-button" type="submit" value="Connect"/>
+                            {% endif %}
                         </div>
-                    </a>
+                    </form>
                 </div>
+            </div>
+            <div class="player-port">
+                <div class="form-container">
+                    <form action="{{ url_for('check') }}" method="post">
+                        <label for="portnumber2">Player 2's Port</label><br>
+                        <div class="port-and-button-container">
+                            {% if port2_valid == True %}
+                            <input type="text" id="portnumber2" name="portnumber2" value="{{ game.player_2.port }}"
+                                   disabled="disabled"/>
+                            <input class="connect-button" type="submit" value="Player 2 connected"
+                                   style="background: green"/>
+                            {% else %}
+                            <input type="text" id="portnumber2" name="portnumber2"/>
+                            <input class="connect-button" type="submit" value="Connect"/>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="play-button-container">
+                <a href="{{ url_for('start') }}">
+                    <div class="play-button">
+                        Play
+                    </div>
+                </a>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

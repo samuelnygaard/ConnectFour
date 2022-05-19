@@ -18,10 +18,10 @@ class Player:
 
     def request_move(self, server_ip, board, board_width):
         # Send a post requst with a board to check if a valid move is made
-        move = requests.post(f'http://{server_ip}:' + str(self.port) + '/api/nextmove',
+        move = requests.post(f'http://{server_ip}:' + str(self.port) + '/api/nextMove',
                              json={
                                  'board': board,
-                                 'board_width': board_width
+                                 'player_symbol': self.symbol
                              })
         move = int(move.json()['response'])
         return move
@@ -72,6 +72,16 @@ class ConnectFourGame:
         self.player_1 = player_1
         self.player_2 = player_2
         self.current_player = self.player_1 if self.is_player_1_turn else self.player_2
+
+    def reset(self):
+        # Reset game
+        self.board = self.initialize_board()
+
+        # Reinit players
+        self.player_1 = Player("Gary", "X", True)
+        self.player_2 = Player("Magnus", "O", True)
+        self.current_player = self.player_1
+        self.is_game_over = False
 
     def drop_piece(self, column):
         """

@@ -11,7 +11,7 @@ def connect_player(player: Player, port, game: ConnectFourGame):
     assert 1 < port < 65535, "Port must be between 1 and 65535"
 
     # Send a get request to the api to check if a name is send
-    name = requests.get(f'http://{server_ip}:' + str(port) + '/api/getname')
+    name = requests.get(f'http://{server_ip}:' + str(port) + '/api/getAgentName')
     name = name.json()['response']
     print("Name: " + name)
     assert name != "", "Name must not be empty"
@@ -22,14 +22,14 @@ def connect_player(player: Player, port, game: ConnectFourGame):
     player.is_human = False
 
     # Send a post requst with a board to check if a valid move is made
-    move = requests.post(f'http://{server_ip}:' + str(port) + '/api/nextmove',
+    move = requests.post(f'http://{server_ip}:' + str(port) + '/api/nextMove',
                          json={'board': [["-", "-", "-", "-", "-", "-", "-"],
                                          ["-", "-", "-", "-", "-", "-", "-"],
                                          ["-", "-", "-", "-", "-", "-", "-"],
                                          ["-", "-", "-", "-", "-", "-", "-"],
                                          ["-", "-", "-", "-", "-", "-", "-"],
                                          ["-", "-", "-", "-", "-", "-", "-"]],
-                               'board_width': game.board_width,
+                               'player_symbol': player.symbol
                                })
     move = int(move.json()['response'])
     print("Move: " + str(move))
@@ -82,13 +82,7 @@ def create_app():
         validated_ports['port1'] = False
         validated_ports['port2'] = False
 
-        # Reset game
-        game.board = game.initialize_board()
-
-        # Reinit players
-        game.player_1 = Player("Gary", "X", True)
-        game.player_2 = Player("Magnus", "O", True)
-        game.current_player = game.player_1
+        game.reset()
 
         return render_template("game/lobby.html", game=game, port1_valid=validated_ports['port1'], port2_valid=validated_ports['port2'])
 
@@ -109,7 +103,6 @@ def create_app():
         if game.current_player.is_human:
             game.current_player.end_turn()
             col = int(col)
-            game.current_player.start_turn()
         else:
             game.current_player.start_turn()
             col = game.current_player.request_move(server_ip, game.board, game.board_width)
@@ -119,6 +112,9 @@ def create_app():
             return render_template("game/game.html", game=game, message="Invalid Column!")
         else:
             game.drop_piece(col)
+
+            if game.current_player.is_human:
+                game.current_player.start_turn()
 
             # Check if winner is found
             if game.is_game_over:

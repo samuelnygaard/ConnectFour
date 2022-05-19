@@ -3,6 +3,12 @@ $background-color-main: #312E2B;
 $bottom-width: 15vw;
 $bottom-height: 5vh;
 
+.message-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .bottom-container {
   display: flex;
   justify-content: center;

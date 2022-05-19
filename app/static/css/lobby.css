@@ -1,3 +1,9 @@
+.message-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .bottom-container {
   display: flex;
   justify-content: center;
