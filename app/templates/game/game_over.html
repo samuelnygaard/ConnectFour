@@ -10,9 +10,12 @@
         <h1>{{ message }}</h1>
     </div>
     <div class="board-container">
+
+
+
         <div class="board">
             <!-- Connect Four Grid -->
-            {% for row in board %}
+            {% for row in game.board %}
             <div class="row">
                 {% for cell in row %}
 

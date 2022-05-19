@@ -1,6 +1,7 @@
 import requests
 import time
 
+
 class Player:
 
     def __init__(self, name, symbol, is_human=True):
@@ -8,6 +9,10 @@ class Player:
         self.symbol = symbol
         self.is_human = is_human
         self.port = None
+        self.turn_time = [0.]
+        self.turn_start_time = 0
+
+    def reset(self):
         self.turn_time = [0.]
         self.turn_start_time = 0
 
@@ -36,7 +41,6 @@ class Player:
 
     def get_last_turn_time(self):
         return round(self.turn_time[-1], 1)
-
 
 
 class ConnectFourGame:

@@ -78,11 +78,17 @@ def create_app():
     @app.route('/')
     def lobby():
 
-        game = ConnectFourGame()
-
         # Set validated ports to False
         validated_ports['port1'] = False
         validated_ports['port2'] = False
+
+        # Reset game
+        game.board = game.initialize_board()
+
+        # Reinit players
+        game.player_1 = Player("Gary", "X", True)
+        game.player_2 = Player("Magnus", "O", True)
+        game.current_player = game.player_1
 
         return render_template("game/lobby.html", game=game, port1_valid=validated_ports['port1'], port2_valid=validated_ports['port2'])
 
@@ -90,6 +96,7 @@ def create_app():
     @app.route('/start', methods=['GET', 'POST'])
     def start():
         game.board = game.initialize_board()
+
         game_message = "Player 1's turn" if game.current_player == game.player_1 else "Player 2's turn"
 
         return render_template("game/game.html", game=game, message=game_message)
