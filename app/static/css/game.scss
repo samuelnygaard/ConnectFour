@@ -1,10 +1,27 @@
 $cell-size: 5vw;
+$cell-shadow-size: $cell-size / 20;
 $cell-size-half: $cell-size / 2;
 $cell-size-quarter: $cell-size / 4;
 $board-color-blue: #0173D3;
 $background-color-main: #312E2B;
-$bottom-width: 15vw;
+$bottom-width: 10vw;
 $bottom-height: 5vh;
+
+.player1-info-container {
+  position: absolute;
+  font-size: x-large;
+  line-height: 5px;
+  top: 20vh;
+  left: 10vw;
+}
+
+.player2-info-container {
+  position: absolute;
+  font-size: x-large;
+  line-height: 5px;
+  top: 20vh;
+  right: 10vw;
+}
 
 .board-container {
   display: flex;
@@ -13,6 +30,7 @@ $bottom-height: 5vh;
 }
 
 .board {
+  margin: 0 15vw;
   width: 7 * $cell-size + $cell-size-quarter;
   height: 6 * $cell-size + $cell-size-quarter;
   background-color: $board-color-blue;
@@ -37,7 +55,7 @@ $bottom-height: 5vh;
   width: $cell-size - $cell-size-quarter;
   height: $cell-size - $cell-size-quarter;
   border-radius: 50%;
-  box-shadow: 0 0 0 5px $background-color-main;
+  box-shadow: 0 0 0 $cell-shadow-size $background-color-main;
 }
 
 .empty {
@@ -45,11 +63,11 @@ $bottom-height: 5vh;
 }
 
 .player-1 {
-  background-color: yellow;
+  background-color: red;
 }
 
 .player-2 {
-  background-color: red;
+  background-color: yellow;
 }
 
 .bottom-container {

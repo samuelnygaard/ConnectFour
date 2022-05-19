@@ -1,3 +1,19 @@
+.player1-info-container {
+  position: absolute;
+  font-size: x-large;
+  line-height: 5px;
+  top: 20vh;
+  left: 10vw;
+}
+
+.player2-info-container {
+  position: absolute;
+  font-size: x-large;
+  line-height: 5px;
+  top: 20vh;
+  right: 10vw;
+}
+
 .board-container {
   display: flex;
   justify-content: center;
@@ -5,6 +21,7 @@
 }
 
 .board {
+  margin: 0 15vw;
   width: 36.25vw;
   height: 31.25vw;
   background-color: #0173D3;
@@ -29,7 +46,7 @@
   width: 3.75vw;
   height: 3.75vw;
   border-radius: 50%;
-  box-shadow: 0 0 0 5px #312E2B;
+  box-shadow: 0 0 0 0.25vw #312E2B;
 }
 
 .empty {
@@ -37,11 +54,11 @@
 }
 
 .player-1 {
-  background-color: yellow;
+  background-color: red;
 }
 
 .player-2 {
-  background-color: red;
+  background-color: yellow;
 }
 
 .bottom-container {
@@ -58,7 +75,7 @@
   font-size: xx-large;
   background-color: #0173D3;
   height: 5vh;
-  width: 15vw;
+  width: 10vw;
   border-radius: 5px;
   padding: 3px;
   border: 1px solid #000;

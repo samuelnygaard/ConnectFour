@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request
-from ConnectFourGame import ConnectFourGame
+from ConnectFourGame import ConnectFourGame, Player
 import requests
+import time
 
 server_ip = '127.0.0.1'
 
 
-def check_port(port, game: ConnectFourGame):
-
+def connect_player(player: Player, port, game: ConnectFourGame):
     port = int(port)
     assert 1 < port < 65535, "Port must be between 1 and 65535"
 
@@ -15,6 +15,11 @@ def check_port(port, game: ConnectFourGame):
     name = name.json()['response']
     print("Name: " + name)
     assert name != "", "Name must not be empty"
+
+    # Set player properties
+    player.name = name
+    player.port = port
+    player.is_human = False
 
     # Send a post requst with a board to check if a valid move is made
     move = requests.post(f'http://{server_ip}:' + str(port) + '/api/nextmove',
@@ -44,48 +49,50 @@ def create_app():
 
     @app.route('/check', methods=['GET', 'POST'])
     def check():
-
+        game_message = ""
         if request.method == 'POST':
 
-            if 'portnumber1' or 'portnumber2' in request.form:
-                if 'portnumber1' in request.form:
-                    portnumber = request.form['portnumber1']
-                else:
-                    portnumber = request.form['portnumber2']
-
+            if 'portnumber1' in request.form:
+                portnumber1 = request.form['portnumber1']
                 try:
-                    if check_port(portnumber, game):
-                        if 'portnumber1' in request.form:
-                            validated_ports['port1'] = True
-                            game.player_1.is_human = False
-                            game.player_1.port = int(portnumber)
-                        else:
-                            validated_ports['port2'] = True
-                            game.player_2.is_human = False
-                            game.player_2.port = int(portnumber)
-                except Exception as e:
-                    print(e)
+                    connect_player(game.player_1, portnumber1, game)
+                    validated_ports['port1'] = True
 
-        return render_template("game/lobby.html", port1_valid=validated_ports['port1'],
-                               port2_valid=validated_ports['port2'])
+                except Exception as err:
+                    game_message = f"Couldn't connect player 1\n{err}"
+
+            if 'portnumber2' in request.form:
+                portnumber2 = request.form['portnumber2']
+                try:
+                    connect_player(game.player_2, portnumber2, game)
+                    validated_ports['port2'] = True
+                except Exception as err:
+                    game_message = f"Couldn't connect player 2\n{err}"
+
+        return render_template("game/lobby.html",
+                               game=game,
+                               port1_valid=validated_ports['port1'],
+                               port2_valid=validated_ports['port2'],
+                               message=game_message)
 
     @app.route('/')
     def lobby():
+
+        game = ConnectFourGame()
 
         # Set validated ports to False
         validated_ports['port1'] = False
         validated_ports['port2'] = False
 
-        return render_template("game/lobby.html", port1_valid=validated_ports['port1'],
-                               port2_valid=validated_ports['port2'])
+        return render_template("game/lobby.html", game=game, port1_valid=validated_ports['port1'], port2_valid=validated_ports['port2'])
 
     # route to reset the board and start a new game
     @app.route('/start', methods=['GET', 'POST'])
     def start():
         game.board = game.initialize_board()
-        game_message = "New Game! - Player 1's turn" if game.current_player == game.player_1 else "New Game! - Player 2's turn"
+        game_message = "Player 1's turn" if game.current_player == game.player_1 else "Player 2's turn"
 
-        return render_template("game/game.html", board=game.board, message=game_message)
+        return render_template("game/game.html", game=game, message=game_message)
 
     # route to move the piece for the player one to the desired column number,
     # if the column is invalid return invalid else the move is valid,
@@ -93,20 +100,24 @@ def create_app():
     @app.route('/move/<col>', methods=['GET', 'POST'])
     def move(col):
         if game.current_player.is_human:
+            game.current_player.end_turn()
             col = int(col)
+            game.current_player.start_turn()
         else:
+            game.current_player.start_turn()
             col = game.current_player.request_move(server_ip, game.board, game.board_width)
+            game.current_player.end_turn()
 
         if (col < 0 or col > game.board_width):
-            return render_template("game/game.html", board=game.board, message="Invalid Column!")
+            return render_template("game/game.html", game=game, message="Invalid Column!")
         else:
             game.drop_piece(col)
 
             # Check if winner is found
             if game.is_game_over:
-                return render_template("game/game_over.html", board=game.board, message=game.game_message)
+                return render_template("game/game_over.html", game=game, message=game.game_message)
             else:
                 game_message = "Player 1's turn" if game.current_player == game.player_1 else "Player 2's turn"
-                return render_template("game/game.html", board=game.board, message=game_message)
+                return render_template("game/game.html", game=game, message=game_message)
 
     return app

@@ -1,4 +1,5 @@
 import requests
+import time
 
 class Player:
 
@@ -7,7 +8,8 @@ class Player:
         self.symbol = symbol
         self.is_human = is_human
         self.port = None
-        self.time_per_move = []
+        self.turn_time = [0.]
+        self.turn_start_time = 0
 
     def request_move(self, server_ip, board, board_width):
         # Send a post requst with a board to check if a valid move is made
@@ -17,8 +19,24 @@ class Player:
                                  'board_width': board_width
                              })
         move = int(move.json()['response'])
-
         return move
+
+    def start_turn(self):
+        self.turn_start_time = time.time()
+
+    def end_turn(self):
+        if self.turn_start_time == 0:
+            self.turn_time.append(0)
+        else:
+            time_taken = time.time() - self.turn_start_time
+            self.turn_time.append(time_taken)
+
+    def get_total_time(self):
+        return round(sum(self.turn_time), 1)
+
+    def get_last_turn_time(self):
+        return round(self.turn_time[-1], 1)
+
 
 
 class ConnectFourGame:

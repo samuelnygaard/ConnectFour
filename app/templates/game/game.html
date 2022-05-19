@@ -6,14 +6,28 @@
 
 {% block main %}
 <div class="container">
+
+
     <div class="title-container">
-        <h1>{{ message }}</h1>
+        {% if game.current_player == game.player_1 %}
+        <h1 style="color:red">{{ message }}</h1>
+        {% else %}
+        <h1 style="color:yellow">{{ message }}</h1>
+        {% endif %}
     </div>
     <div class="board-container">
+
+        <div class="player1-info-container">
+            <h3 style="color: red">Player 1:</h3>
+            <p>Name: {{ game.player_1.name }}</p>
+            <p>Total time: {{ game.player_1.get_total_time() }} seconds</p>
+            <p>Last move: {{ game.player_1.get_last_turn_time() }} seconds</p>
+        </div>
+
         <div class="board">
 
             <!-- Connect Four Grid -->
-            {% for row in board %}
+            {% for row in game.board %}
             <div class="row">
                 {% for cell in row %}
                 <a href="{{ url_for('move', col=loop.index) }}">
@@ -35,6 +49,14 @@
             </div>
             {% endfor %}
         </div>
+
+        <div class="player2-info-container">
+            <h3 style="color: yellow">Player 2:</h3>
+            <p>Name: {{ game.player_2.name }}</p>
+            <p>Total time: {{ game.player_2.get_total_time() }} seconds</p>
+            <p>Last move: {{ game.player_2.get_last_turn_time() }} seconds</p>
+        </div>
+
     </div>
     <div class="bottom-container">
         <a href="{{ url_for('lobby') }}">
@@ -43,5 +65,7 @@
             </div>
         </a>
     </div>
+
+
 </div>
 {% endblock %}
