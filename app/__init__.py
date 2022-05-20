@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request
 from ConnectFourGame import ConnectFourGame, Player
 import requests
-import time
 
-server_ip = '127.0.0.1'
+server_ip = '20.223.236.119'
+# server_ip = '127.0.0.1'
 
 
 def connect_player(player: Player, port, game: ConnectFourGame):
@@ -13,7 +13,6 @@ def connect_player(player: Player, port, game: ConnectFourGame):
     # Send a get request to the api to check if a name is send
     name = requests.get(f'http://{server_ip}:' + str(port) + '/api/getAgentName')
     name = name.json()['response']
-    print("Name: " + name)
     assert name != "", "Name must not be empty"
 
     # Set player properties
@@ -32,7 +31,6 @@ def connect_player(player: Player, port, game: ConnectFourGame):
                                'player_symbol': player.symbol
                                })
     move = int(move.json()['response'])
-    print("Move: " + str(move))
     assert 0 <= move <= game.board_width - 1, "Move must be between 0 and {}".format(game.board_width - 1)
 
     return True
